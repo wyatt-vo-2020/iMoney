@@ -5,26 +5,28 @@
   </nav>
   <router-view />
 </template>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-nav {
-  padding: 30px;
-}
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
+<script>
+import { db } from "./configs/firebase";
+import { collection, getDocs } from "firebase/firestore";
+export default {
+  setup() {
+    async function getTransactions() {
+      // const transactions = await collection(db, "transactions");
+      // const docSnap = await getDocs(transactions);
+      // console.log(docSnap);
+      // if (docSnap.exists()) {
+      //   console.log("Document data:", docSnap.data());
+      // } else {
+      //   // docSnap.data() will be undefined in this case
+      //   console.log("No such document!");
+      // }
+      const querySnapshot = await getDocs(collection(db, "transactions"));
+      querySnapshot.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        console.log(doc.id, " => ", doc.data());
+      });
+    }
+    getTransactions();
+  },
+};
+</script>
